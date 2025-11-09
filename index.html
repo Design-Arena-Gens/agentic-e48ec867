@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostuLink - Générateur de Logo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .controls {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .control-group input[type="color"],
+        .control-group input[type="range"],
+        .control-group select {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .control-group input[type="range"] {
+            cursor: pointer;
+        }
+
+        .control-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .logos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .logo-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .logo-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .logo-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .logo-canvas-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 20px;
+            min-height: 300px;
+        }
+
+        canvas {
+            border-radius: 8px;
+            background: white;
+        }
+
+        .download-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .download-btn:active {
+            transform: scale(0.98);
+        }
+
+        .value-display {
+            display: inline-block;
+            margin-left: 10px;
+            color: #667eea;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PostuLink</h1>
+        <p class="subtitle">Générateur de Logo - Votre partenaire pour des candidatures intelligentes</p>
+
+        <div class="controls">
+            <h2 style="margin-bottom: 20px; color: #333;">Personnalisation</h2>
+            <div class="control-row">
+                <div class="control-group">
+                    <label>Couleur Principale</label>
+                    <input type="color" id="primaryColor" value="#667eea">
+                </div>
+                <div class="control-group">
+                    <label>Couleur Secondaire</label>
+                    <input type="color" id="secondaryColor" value="#764ba2">
+                </div>
+                <div class="control-group">
+                    <label>Couleur Accent</label>
+                    <input type="color" id="accentColor" value="#48bb78">
+                </div>
+                <div class="control-group">
+                    <label>Style de Logo</label>
+                    <select id="logoStyle">
+                        <option value="modern">Moderne</option>
+                        <option value="minimal">Minimaliste</option>
+                        <option value="bold">Bold</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="logos-grid">
+            <div class="logo-card">
+                <div class="logo-title">Logo 1 - Lien & Document</div>
+                <div class="logo-canvas-container">
+                    <canvas id="logo1" width="400" height="400"></canvas>
+                </div>
+                <button class="download-btn" onclick="downloadLogo('logo1', 'PostuLink_Logo1')">
+                    Télécharger PNG
+                </button>
+            </div>
+
+            <div class="logo-card">
+                <div class="logo-title">Logo 2 - Connexion IA</div>
+                <div class="logo-canvas-container">
+                    <canvas id="logo2" width="400" height="400"></canvas>
+                </div>
+                <button class="download-btn" onclick="downloadLogo('logo2', 'PostuLink_Logo2')">
+                    Télécharger PNG
+                </button>
+            </div>
+
+            <div class="logo-card">
+                <div class="logo-title">Logo 3 - Typographique</div>
+                <div class="logo-canvas-container">
+                    <canvas id="logo3" width="500" height="200"></canvas>
+                </div>
+                <button class="download-btn" onclick="downloadLogo('logo3', 'PostuLink_Logo3')">
+                    Télécharger PNG
+                </button>
+            </div>
+
+            <div class="logo-card">
+                <div class="logo-title">Logo 4 - Badge Circulaire</div>
+                <div class="logo-canvas-container">
+                    <canvas id="logo4" width="400" height="400"></canvas>
+                </div>
+                <button class="download-btn" onclick="downloadLogo('logo4', 'PostuLink_Logo4')">
+                    Télécharger PNG
+                </button>
+            </div>
+
+            <div class="logo-card">
+                <div class="logo-title">Logo 5 - Icône Carrée</div>
+                <div class="logo-canvas-container">
+                    <canvas id="logo5" width="400" height="400"></canvas>
+                </div>
+                <button class="download-btn" onclick="downloadLogo('logo5', 'PostuLink_Logo5')">
+                    Télécharger PNG
+                </button>
+            </div>
+
+            <div class="logo-card">
+                <div class="logo-title">Logo 6 - Horizontal</div>
+                <div class="logo-canvas-container">
+                    <canvas id="logo6" width="600" height="200"></canvas>
+                </div>
+                <button class="download-btn" onclick="downloadLogo('logo6', 'PostuLink_Logo6')">
+                    Télécharger PNG
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let colors = {
+            primary: '#667eea',
+            secondary: '#764ba2',
+            accent: '#48bb78'
+        };
+
+        let logoStyle = 'modern';
+
+        function drawLogo1(canvas, ctx) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Cercle de fond avec gradient
+            const gradient = ctx.createLinearGradient(0, 0, 400, 400);
+            gradient.addColorStop(0, colors.primary);
+            gradient.addColorStop(1, colors.secondary);
+
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(200, 200, 150, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Symbole de lien stylisé
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 20;
+            ctx.lineCap = 'round';
+
+            // Premier maillon
+            ctx.beginPath();
+            ctx.arc(160, 200, 40, -Math.PI/4, Math.PI * 5/4);
+            ctx.stroke();
+
+            // Deuxième maillon
+            ctx.beginPath();
+            ctx.arc(240, 200, 40, Math.PI * 3/4, -Math.PI/4);
+            ctx.stroke();
+
+            // Document/CV icon
+            ctx.fillStyle = colors.accent;
+            ctx.fillRect(170, 140, 60, 80);
+            ctx.fillStyle = 'white';
+            ctx.fillRect(180, 155, 40, 5);
+            ctx.fillRect(180, 170, 40, 5);
+            ctx.fillRect(180, 185, 30, 5);
+        }
+
+        function drawLogo2(canvas, ctx) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Forme hexagonale
+            const centerX = 200;
+            const centerY = 200;
+            const radius = 140;
+
+            ctx.fillStyle = colors.primary;
+            ctx.beginPath();
+            for (let i = 0; i < 6; i++) {
+                const angle = (Math.PI / 3) * i - Math.PI / 6;
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY + radius * Math.sin(angle);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            ctx.fill();
+
+            // Points de connexion (réseau neuronal)
+            const points = [
+                {x: 150, y: 150}, {x: 250, y: 150},
+                {x: 200, y: 200},
+                {x: 150, y: 250}, {x: 250, y: 250}
+            ];
+
+            // Lignes de connexion
+            ctx.strokeStyle = colors.accent;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, points[0].y);
+            ctx.lineTo(points[2].x, points[2].y);
+            ctx.lineTo(points[1].x, points[1].y);
+            ctx.moveTo(points[2].x, points[2].y);
+            ctx.lineTo(points[3].x, points[3].y);
+            ctx.moveTo(points[2].x, points[2].y);
+            ctx.lineTo(points[4].x, points[4].y);
+            ctx.stroke();
+
+            // Points
+            points.forEach(p => {
+                ctx.fillStyle = 'white';
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 12, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = colors.accent;
+                ctx.lineWidth = 3;
+                ctx.stroke();
+            });
+        }
+
+        function drawLogo3(canvas, ctx) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Texte "PostuLink"
+            ctx.font = 'bold 70px Arial';
+
+            // Partie "Postu"
+            const gradient1 = ctx.createLinearGradient(0, 0, 300, 0);
+            gradient1.addColorStop(0, colors.primary);
+            gradient1.addColorStop(1, colors.secondary);
+            ctx.fillStyle = gradient1;
+            ctx.fillText('Postu', 50, 120);
+
+            // Partie "Link"
+            ctx.fillStyle = colors.accent;
+            ctx.fillText('Link', 270, 120);
+
+            // Icône de lien au-dessus du "i"
+            ctx.strokeStyle = colors.accent;
+            ctx.lineWidth = 6;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.arc(310, 50, 15, 0, Math.PI * 1.5);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(340, 50, 15, Math.PI/2, Math.PI * 2);
+            ctx.stroke();
+        }
+
+        function drawLogo4(canvas, ctx) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Cercle extérieur
+            const gradient = ctx.createLinearGradient(0, 0, 400, 400);
+            gradient.addColorStop(0, colors.primary);
+            gradient.addColorStop(1, colors.secondary);
+
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(200, 200, 160, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Cercle blanc intérieur
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(200, 200, 130, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Lettres "PL"
+            ctx.font = 'bold 120px Arial';
+            ctx.fillStyle = colors.primary;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('PL', 200, 200);
+
+            // Texte circulaire
+            ctx.font = 'bold 24px Arial';
+            ctx.fillStyle = 'white';
+            const text = 'POSTULINK';
+            const angleStep = (Math.PI * 2) / text.length;
+            for (let i = 0; i < text.length; i++) {
+                ctx.save();
+                const angle = angleStep * i - Math.PI / 2;
+                ctx.translate(200 + Math.cos(angle) * 145, 200 + Math.sin(angle) * 145);
+                ctx.rotate(angle + Math.PI / 2);
+                ctx.fillText(text[i], 0, 0);
+                ctx.restore();
+            }
+        }
+
+        function drawLogo5(canvas, ctx) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Carré arrondi avec gradient
+            const gradient = ctx.createLinearGradient(0, 0, 400, 400);
+            gradient.addColorStop(0, colors.primary);
+            gradient.addColorStop(1, colors.secondary);
+
+            ctx.fillStyle = gradient;
+            roundRect(ctx, 50, 50, 300, 300, 40);
+            ctx.fill();
+
+            // Flèche montante (croissance)
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 25;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            ctx.beginPath();
+            ctx.moveTo(120, 280);
+            ctx.lineTo(180, 180);
+            ctx.lineTo(240, 220);
+            ctx.lineTo(300, 120);
+            ctx.stroke();
+
+            // Point de connexion
+            ctx.fillStyle = colors.accent;
+            ctx.beginPath();
+            ctx.arc(180, 180, 20, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Document stylisé
+            ctx.fillStyle = 'white';
+            ctx.fillRect(140, 240, 50, 60);
+            ctx.fillStyle = colors.accent;
+            ctx.fillRect(150, 255, 30, 4);
+            ctx.fillRect(150, 268, 30, 4);
+            ctx.fillRect(150, 281, 20, 4);
+        }
+
+        function drawLogo6(canvas, ctx) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Icône à gauche
+            const gradient = ctx.createLinearGradient(0, 0, 150, 150);
+            gradient.addColorStop(0, colors.primary);
+            gradient.addColorStop(1, colors.secondary);
+
+            ctx.fillStyle = gradient;
+            roundRect(ctx, 30, 40, 120, 120, 20);
+            ctx.fill();
+
+            // Symbole de connexion
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 12;
+            ctx.lineCap = 'round';
+
+            ctx.beginPath();
+            ctx.arc(70, 100, 20, -Math.PI/4, Math.PI * 5/4);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(110, 100, 20, Math.PI * 3/4, -Math.PI/4);
+            ctx.stroke();
+
+            // Texte
+            ctx.font = 'bold 80px Arial';
+            ctx.fillStyle = colors.primary;
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('PostuLink', 170, 100);
+
+            // Sous-titre
+            ctx.font = '20px Arial';
+            ctx.fillStyle = colors.secondary;
+            ctx.fillText('Candidatures Intelligentes', 170, 145);
+        }
+
+        function roundRect(ctx, x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+
+        function updateAllLogos() {
+            const logo1 = document.getElementById('logo1');
+            const ctx1 = logo1.getContext('2d');
+            drawLogo1(logo1, ctx1);
+
+            const logo2 = document.getElementById('logo2');
+            const ctx2 = logo2.getContext('2d');
+            drawLogo2(logo2, ctx2);
+
+            const logo3 = document.getElementById('logo3');
+            const ctx3 = logo3.getContext('2d');
+            drawLogo3(logo3, ctx3);
+
+            const logo4 = document.getElementById('logo4');
+            const ctx4 = logo4.getContext('2d');
+            drawLogo4(logo4, ctx4);
+
+            const logo5 = document.getElementById('logo5');
+            const ctx5 = logo5.getContext('2d');
+            drawLogo5(logo5, ctx5);
+
+            const logo6 = document.getElementById('logo6');
+            const ctx6 = logo6.getContext('2d');
+            drawLogo6(logo6, ctx6);
+        }
+
+        function downloadLogo(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename + '.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        // Event listeners
+        document.getElementById('primaryColor').addEventListener('input', (e) => {
+            colors.primary = e.target.value;
+            updateAllLogos();
+        });
+
+        document.getElementById('secondaryColor').addEventListener('input', (e) => {
+            colors.secondary = e.target.value;
+            updateAllLogos();
+        });
+
+        document.getElementById('accentColor').addEventListener('input', (e) => {
+            colors.accent = e.target.value;
+            updateAllLogos();
+        });
+
+        document.getElementById('logoStyle').addEventListener('change', (e) => {
+            logoStyle = e.target.value;
+            updateAllLogos();
+        });
+
+        // Initialisation
+        updateAllLogos();
+    </script>
+</body>
+</html>
